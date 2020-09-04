@@ -124,8 +124,8 @@ HTMLWidgets.widget({
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                .style('top',  `${posX}px`)
-                .style('left', `${posY}px`)
+                .style('top',  `${500}px`)
+                .style('left', `${500}px`)
                 .html(function() {
                     // indexes
                     var i = d.source.index,
