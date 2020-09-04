@@ -68,6 +68,8 @@ HTMLWidgets.widget({
     
     d3.select(el).selectAll("div.d3-tip").remove();
     $(el).find("div.d3-tip").remove();
+    console.log('inner tags: ', $(el).find("div.d3-tip"));
+    console.log('all tags: ', $('body').find("div.d3-tip"))
 
     if (showTooltips) {
         console.log('creating chordTip:');
