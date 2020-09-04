@@ -159,7 +159,7 @@ HTMLWidgets.widget({
         console.log('chordTipNode: ', chordTipNode, "   el: ", el, "    ", $(el));
 
         $(el).append(chordTipNode);
-        $(el).append(groupTip);
+        $(el).append(groupTipNode);
         
         // console.log('chordTip: ', chordTip);
         
