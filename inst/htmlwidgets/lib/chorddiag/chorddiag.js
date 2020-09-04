@@ -369,7 +369,7 @@ HTMLWidgets.widget({
 
     function click(d) {
         console.log('clicked');
-        this.renderValue(el, params, chord);
+        renderValue(el, params, chord);
     //   return eval(clickAction);
     }
 
