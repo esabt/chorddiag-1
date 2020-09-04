@@ -117,15 +117,15 @@ HTMLWidgets.widget({
             console.log('d: ', d);
             console.log('i: ', i);
             console.log('mouse event: ', d3.event);
-            let posX = d3.event.layerX;
-            let posY = d3.event.layerY;
+            let posX = d3.event.clientX;
+            let posY = d3.event.clientY;
             console.log('posX: ', posX);
             console.log('posY: ', posY);
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                .style('top',  `${500}px`)
-                .style('left', `${500}px`)
+                .style('top',  `${clientY}px`)
+                .style('left', `${clientX}px`)
                 .html(function() {
                     // indexes
                     var i = d.source.index,
@@ -149,6 +149,7 @@ HTMLWidgets.widget({
                         return dir2;
                     }
                 });
+            console.log('chordTip: ', chordTip);
         };
         chordTip.hide = function(d){
             chordTip
