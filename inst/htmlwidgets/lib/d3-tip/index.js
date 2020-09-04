@@ -247,6 +247,7 @@
     }
 
     function initNode() {
+      console.log('creating div');
       var div = d3Selection.select(document.createElement('div'));
       div
         .style('position', 'absolute')
