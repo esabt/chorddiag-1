@@ -70,7 +70,7 @@ HTMLWidgets.widget({
     d3.select(el).selectAll("div.d3-tip").remove();
 
     if (showTooltips) {
-        var chordTip = d3.tip(el);
+        var chordTip = d3.tip();
         if(!!toolTipId){
             toolTipId.attr('id', toolTipId);
         }
@@ -104,7 +104,7 @@ HTMLWidgets.widget({
                 }
             });
 
-        var groupTip = d3.tip(el);
+        var groupTip = d3.tip();
         if(!!groupTipId){
             groupTip.attr('id', groupTip);
         }
