@@ -116,7 +116,9 @@ chorddiag <- function(data,
                       tooltipGroupConnector = " &#x25B6; ",
                       precision = NULL,
                       clickAction = NULL,
-                      clickGroupAction = NULL) {
+                      clickGroupAction = NULL,
+                      toolTipId = "",
+                      groupTipId = "") {
 
     if (!is.matrix(data))
         stop("'data' must be a matrix class object.")
@@ -220,7 +222,9 @@ chorddiag <- function(data,
                                  tooltipGroupConnector = tooltipGroupConnector,
                                  precision = precision,
                                  clickAction = clickAction,
-                                 clickGroupAction = clickGroupAction))
+                                 clickGroupAction = clickGroupAction,
+                                 toolTipId = toolTipId,
+                                 groupTipId = groupTipId))
     params = Filter(Negate(is.null), params)
 
     # create widget

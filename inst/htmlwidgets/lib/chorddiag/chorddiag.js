@@ -62,51 +62,63 @@ HTMLWidgets.widget({
         tooltipGroupConnector = options.tooltipGroupConnector,
         precision = options.precision,
         clickAction = options.clickAction,
-        clickGroupAction = options.clickGroupAction;
+        clickGroupAction = options.clickGroupAction,
+        toolTipId = options.toolTipId,
+        groupTipId = iptions.groupTipId;
 
+    console.log('rerendering: - d3.select(el).selectAll("div.d3-tip"): ', d3.select(el).selectAll("div.d3-tip"));
     d3.select(el).selectAll("div.d3-tip").remove();
 
     if (showTooltips) {
-        var chordTip = d3.tip()
-                         .attr('class', 'd3-tip')
-                         .style("font-size", tooltipFontsize + "px")
-                         .style("font-family", "sans-serif")
-                         .direction('n')
-                         .offset([10, 10])
-                         .html(function(d) {
-                             // indexes
-                             var i = d.source.index,
-                                 j = d.target.index;
-                             // values
-                             var vij = sigFigs(matrix[i][j], precision),
-                                 vji = sigFigs(matrix[j][i], precision);
-                             var dir1 = tooltipNames[i] + tooltipGroupConnector + tooltipNames[j] + ": " + vij + tooltipUnit,
-                                 dir2 = tooltipNames[j] + tooltipGroupConnector + tooltipNames[i] + ": " + vji + tooltipUnit;
-                             if (type == "directional") {
-                                 if (i == j) {
-                                     return dir1;
-                                 } else {
-                                     if (showZeroTooltips) {
-                                         return dir1 + "</br>" + dir2;
-                                     } else {
-                                         return dir1 + (vji > 0 ? "</br>" + dir2 : "");
-                                     }
-                                 }
-                             } else if (type == "bipartite") {
-                                 return dir2;
-                             }
-                         });
+        var chordTip = d3.tip(el);
+        if(!!toolTipId){
+            toolTipId.attr('id', toolTipId);
+        }
+        chordTip
+            .attr()
+            .attr('class', 'd3-tip')
+            .style("font-size", tooltipFontsize + "px")
+            .style("font-family", "sans-serif")
+            .direction('n')
+            .offset([10, 10])
+            .html(function(d) {
+                // indexes
+                var i = d.source.index,
+                    j = d.target.index;
+                // values
+                var vij = sigFigs(matrix[i][j], precision),
+                    vji = sigFigs(matrix[j][i], precision);
+                var dir1 = tooltipNames[i] + tooltipGroupConnector + tooltipNames[j] + ": " + vij + tooltipUnit,
+                    dir2 = tooltipNames[j] + tooltipGroupConnector + tooltipNames[i] + ": " + vji + tooltipUnit;
+                if (type == "directional") {
+                    if (i == j) {
+                        return dir1;
+                    } else {
+                        if (showZeroTooltips) {
+                            return dir1 + "</br>" + dir2;
+                        } else {
+                            return dir1 + (vji > 0 ? "</br>" + dir2 : "");
+                        }
+                    }
+                } else if (type == "bipartite") {
+                    return dir2;
+                }
+            });
 
-        var groupTip = d3.tip()
-                         .attr('class', 'd3-tip')
-                         .style("font-size", tooltipFontsize + "px")
-                         .style("font-family", "sans-serif")
-                         .direction('n')
-                         .offset([10, 10])
-                         .html(function(d) {
-                             var value = sigFigs(d.value, precision);
-                             return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
-                         });
+        var groupTip = d3.tip();
+        if(!!groupTipId){
+            groupTip.attr('id', groupTip);
+        }
+        groupTip
+            .attr('class', 'd3-tip')
+            .style("font-size", tooltipFontsize + "px")
+            .style("font-family", "sans-serif")
+            .direction('n')
+            .offset([10, 10])
+            .html(function(d) {
+                var value = sigFigs(d.value, precision);
+                return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
+            });
     }
 
     var svgContainer = d3.select(el).select("svg");
