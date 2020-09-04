@@ -66,16 +66,15 @@ HTMLWidgets.widget({
         toolTipId = options.toolTipId,
         groupTipId = options.groupTipId;
 
-    console.log('rerendering: - d3.select(el).selectAll("div.d3-tip"): ', d3.select(el).selectAll("div.d3-tip"));
+    // console.log('rerendering: - d3.select(el).selectAll("div.d3-tip"): ', d3.select(el).selectAll("div.d3-tip"));
     d3.select(el).selectAll("div.d3-tip").remove();
 
     if (showTooltips) {
-        var chordTip = d3.tip();
+        var chordTip = d3.tip(el);
         if(!!toolTipId){
             toolTipId.attr('id', toolTipId);
         }
         chordTip
-            .attr()
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -105,7 +104,7 @@ HTMLWidgets.widget({
                 }
             });
 
-        var groupTip = d3.tip();
+        var groupTip = d3.tip(el);
         if(!!groupTipId){
             groupTip.attr('id', groupTip);
         }
@@ -145,8 +144,8 @@ HTMLWidgets.widget({
     svg.attr("transform", "translate(" + xTranslate + "," + yTranslate + ")");
 
     if (showTooltips) {
-       svg.call(chordTip)
-          .call(groupTip);
+       svg.enter().append(chordTip);
+       svg.enter().append(groupTip);
     }
 
     // create groups

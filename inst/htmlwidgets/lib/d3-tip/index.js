@@ -24,7 +24,6 @@
         target      = null;
 
     function tip(vis) {
-      console.log('vis: ', vis);
       svg = getSVGNode(vis);
       if (!svg) return
       point = svg.createSVGPoint();
