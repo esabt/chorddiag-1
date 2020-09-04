@@ -158,7 +158,7 @@ HTMLWidgets.widget({
                 .style('top', d3.event.pageY)
                 .style('left', d3.event.pageX);
         };
-        groupTip.hide = functione(d){
+        groupTip.hide = function(d){
             groupTip
                 .style('opacity', 0)
                 .style('pointer-events', 'none');
