@@ -66,6 +66,9 @@ HTMLWidgets.widget({
         toolTipId = options.toolTipId,
         groupTipId = options.groupTipId;
 
+    console.log('toolTipId: ', toolTipId);
+    console.log('groupTipId: ', groupTipId);
+    
     // console.log('rerendering: - d3.select(el).selectAll("div.d3-tip"): ', d3.select(el).selectAll("div.d3-tip"));
     let toDel = d3.select(el).selectAll("div.d3-tip");
     console.log('dtoDel: ', toDel);
