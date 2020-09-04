@@ -24,12 +24,10 @@
         target      = null;
 
     function tip(vis) {
-      console.log('vis: ', vis);
       svg = getSVGNode(vis);
-      if (!svg) return;
+      if (!svg) return
       point = svg.createSVGPoint();
       rootElement.appendChild(node);
-      return node;
     }
 
     // Public - show the tooltip on the screen
@@ -248,7 +246,15 @@
     }
 
     function initNode() {
-      console.log('creating div');
+      console.log('direction', direction);
+      console.log('offset', offset);
+      console.log('html', html);
+      console.log('rootElement', rootElement);
+      console.log('node', node);
+      console.log('svg', svg);
+      console.log('point', point);
+      console.log('target', target);
+
       var div = d3Selection.select(document.createElement('div'));
       div
         .style('position', 'absolute')

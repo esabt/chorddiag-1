@@ -65,18 +65,8 @@ HTMLWidgets.widget({
         clickGroupAction = options.clickGroupAction,
         toolTipId = options.toolTipId,
         groupTipId = options.groupTipId;
-
-    console.log('toolTipId: ', toolTipId);
-    console.log('groupTipId: ', groupTipId);
     
-    // console.log('rerendering: - d3.select(el).selectAll("div.d3-tip"): ', d3.select(el).selectAll("div.d3-tip"));
-    $(el).remove('div.d3-tip');
-    // let toDel = d3.select(el).selectAll("div.d3-tip");
-    // console.log('dtoDel: ', toDel);
-    // console.log('el: ', el);
-    // toDel.remove();
-
-    showTooltips = true;
+    d3.select(el).selectAll("div.d3-tip").remove();
 
     if (showTooltips) {
         console.log('creating chordTip:');
@@ -154,18 +144,8 @@ HTMLWidgets.widget({
     svg.attr("transform", "translate(" + xTranslate + "," + yTranslate + ")");
 
     if (showTooltips) {
-        let chordTipNode = svg.call(chordTip);
-        let groupTipNode = svg.call(groupTip);
-
-        console.log('chordTipNode: ', chordTipNode, "   el: ", el, "    ", $(el));
-
-        $(el).append(chordTipNode);
-        $(el).append(groupTipNode);
-        
-        // console.log('chordTip: ', chordTip);
-        
-        // $(el).append(chordTip.node());
-        // $(el).append(groupTip.node());
+       svg.call(chordTip)
+          .call(groupTip);
     }
 
     // create groups
@@ -379,14 +359,13 @@ HTMLWidgets.widget({
     }
 
     function click(d) {
-        console.log('chord-clicked');
+        if(!clickAction)return;
         Shiny.setInputValue(clickAction, d, {priority: "event"});
-        console.log('chord-click-event emitted');
-    //   return eval(clickAction);
     }
 
     function clickGroup(d) {
-        return eval(clickGroupAction)
+        if(!clickGroupAction)return;
+        Shiny.setInputValue(clickGroupAction, d, {priority: "event"});
     }
 
   }  // end renderValue function
