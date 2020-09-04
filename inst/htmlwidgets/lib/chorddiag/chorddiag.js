@@ -73,16 +73,22 @@ HTMLWidgets.widget({
 
     if (showTooltips) {
         console.log('creating chordTip:');
-        var chordTip = d3.tip();
-        if(!!toolTipId){
-            chordTip.attr('id', toolTipId);
-        }
-        chordTip = chordTip
+        // var chordTip = d3.tip();
+        // if(!!toolTipId){
+        //     chordTip.attr('id', toolTipId);
+        // }
+        var chordTip = d3.select(el)
+            .append('div')
+            .attr('id', toolTipId)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
-            .direction('n')
-            .offset([10, 10])
+            .style('position', 'absolute')
+            .style('top', 0)
+            .style('opacity', 0)
+            .style('pointer-events', 'none')
+            .style('box-sizing', 'border-box')
+            // .offset([10, 10])
             .html(function(d) {
                 // indexes
                 var i = d.source.index,
@@ -107,20 +113,56 @@ HTMLWidgets.widget({
                 }
             });
 
-        var groupTip = d3.tip();
-        if(!!groupTipId){
-            groupTip.attr('id', groupTip);
-        }
-        groupTip = groupTip
+        // var groupTip = d3.tip();
+        // if(!!groupTipId){
+        //     groupTip.attr('id', groupTip);
+        // }
+        var groupTip = d3.select(el)
+            .append('div')
+            .attr('id', groupTip)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
-            .direction('n')
-            .offset([10, 10])
+            .style('position', 'absolute')
+            .style('top', 0)
+            .style('opacity', 0)
+            .style('pointer-events', 'none')
+            .style('box-sizing', 'border-box')
+            // .direction('n')
+            // .offset([10, 10])
             .html(function(d) {
                 var value = sigFigs(d.value, precision);
                 return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
             });
+        
+        chordTip.show = function(d, i){
+            console.log('show chord:');
+            console.log('d: ', d);
+            console.log('i: ', i);
+            console.log('mouse event: ', d3.event);
+            chordTip
+                .style('opacity', 1)
+                .style('pointer-events', 'all')
+                .style('top', d3.event.pageY)
+                .style('left', d3.event.pageX);
+        };
+        chordTip.hide = function(d){
+            chordTip
+                .style('opacity', 0)
+                .style('pointer-events', 'none');
+        };
+        groupTip.show = function(d){
+            groupTip
+                .style('opacity', 1)
+                .style('pointer-events', 'all')
+                .style('top', d3.event.pageY)
+                .style('left', d3.event.pageX);
+        };
+        groupTip.hide = functione(d){
+            groupTip
+                .style('opacity', 0)
+                .style('pointer-events', 'none');
+        };
     }
 
     var svgContainer = d3.select(el).select("svg");
@@ -147,12 +189,12 @@ HTMLWidgets.widget({
     svg.attr("transform", "translate(" + xTranslate + "," + yTranslate + ")");
 
     if (showTooltips) {
-        svg.call(chordTip)
-           .call(groupTip);
+        // svg.call(chordTip)
+        //    .call(groupTip);
 
-        console.log('chordTip.node: ', chordTip.node());
-        $(el).append(chordTip.node());
-        $(el).append(groupTip.node());
+        // console.log('chordTip.node: ', chordTip.node());
+        // $(el).append(chordTip.node());
+        // $(el).append(groupTip.node());
     }
 
     // create groups
