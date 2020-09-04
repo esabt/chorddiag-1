@@ -117,8 +117,8 @@ HTMLWidgets.widget({
             console.log('d: ', d);
             console.log('i: ', i);
             console.log('mouse event: ', d3.event);
-            let posX = d3.event.pageX + d3.event.layerX;
-            let posY = d3.event.pageY + d3.event.layerY;
+            let posX = d3.event.layerX;
+            let posY = d3.event.layerY;
             console.log('posX: ', posX);
             console.log('posY: ', posY);
             chordTip
