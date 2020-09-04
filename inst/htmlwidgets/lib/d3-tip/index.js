@@ -29,6 +29,7 @@
       if (!svg) return;
       point = svg.createSVGPoint();
       rootElement.appendChild(node);
+      return node;
     }
 
     // Public - show the tooltip on the screen

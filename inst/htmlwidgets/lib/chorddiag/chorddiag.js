@@ -153,13 +153,15 @@ HTMLWidgets.widget({
     svg.attr("transform", "translate(" + xTranslate + "," + yTranslate + ")");
 
     if (showTooltips) {
-        svg.call(chordTip)
-           .call(groupTip);
+        let chordTipNode = svg.call(chordTip);
+        let groupTipNode = svg.call(groupTip);
+
+        console.log('chordTipNode: ', chordTipNode);
         
-        console.log('chordTip: ', chordTip);
+        // console.log('chordTip: ', chordTip);
         
-        $(el).append(chordTip.node());
-        $(el).append(groupTip.node());
+        // $(el).append(chordTip.node());
+        // $(el).append(groupTip.node());
     }
 
     // create groups
