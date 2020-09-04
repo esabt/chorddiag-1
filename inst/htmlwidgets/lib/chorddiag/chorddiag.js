@@ -126,7 +126,6 @@ HTMLWidgets.widget({
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                // .attr("transform", "translate(" + mouse[0] + "," + mouse[1] + ")scale(0)")
                 .html(function() {
                     // indexes
                     var i = d.source.index,
