@@ -114,13 +114,14 @@ HTMLWidgets.widget({
         
         chordTip.show = function(d, that){
             const mouse = d3.mouse(that);
-            const bndRct = el.getBoundingClientRect();
+            const parentBndRct = el.getBoundingClientRect();
+            const tolTpBndgRct = chordTip.node().getBoundingClientRect();
             console.log('show chord:');
             console.log('d: ', d);
             console.log('that: ', that);
             console.log('mouse event: ', d3.event);
             console.log('d3.mouse: ', mouse);
-            console.log('bndRct: ', bndRct);
+            console.log('parentBndRct: ', parentBndRct);
             let posX = mouse[0];//d3.event.pageX;
             let posY = mouse[1];// d3.event.pageY;
             console.log('posX: ', posX);
@@ -128,8 +129,8 @@ HTMLWidgets.widget({
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                .style('top',  `${posY + Math.floor(bndRct.height * 0.5)}px`)
-                .style('left', `${posX + Math.floor(bndRct.width * 0.5)}px`)
+                .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
+                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`)
                 // .attr("transform", "translate(" + mouse[0] + "," + mouse[1] + ")scale(0)")
                 .html(function() {
                     // indexes
