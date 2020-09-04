@@ -148,6 +148,7 @@ HTMLWidgets.widget({
         svg.call(chordTip)
            .call(groupTip);
 
+        console.log('chordTip.node: ', chordTip.node());
         $(el).append(chordTip.node());
         $(el).append(groupTip.node());
     }
