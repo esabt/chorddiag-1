@@ -121,25 +121,9 @@ HTMLWidgets.widget({
                 .style('top', d3.event.pageY + d3.event.layerY)
                 .style('left', d3.event.pageX + d3.event.layerX)
                 .html(function() {
-                    var value = sigFigs(d.value, precision);
-                    return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
-                });
-        };
-        chordTip.hide = function(d){
-            chordTip
-                .style('opacity', 0)
-                .style('pointer-events', 'none');
-        };
-        groupTip.show = function(d){
-            groupTip
-                .style('opacity', 1)
-                .style('pointer-events', 'all')
-                .style('top', d3.event.pageY + d3.event.layerY)
-                .style('left', d3.event.pageX + d3.event.layerX)
-                .html(function() {
                     // indexes
                     var i = d.source.index,
-                        j = d.target.index;
+                    j = d.target.index;
                     // values
                     var vij = sigFigs(matrix[i][j], precision),
                         vji = sigFigs(matrix[j][i], precision);
@@ -158,6 +142,26 @@ HTMLWidgets.widget({
                     } else if (type == "bipartite") {
                         return dir2;
                     }
+                });
+        };
+        chordTip.hide = function(d){
+            chordTip
+                .style('opacity', 0)
+                .style('pointer-events', 'none');
+        };
+        groupTip.show = function(d, i){
+            console.log('show group:');
+            console.log('d: ', d);
+            console.log('i: ', i);
+            console.log('mouse event: ', d3.event);
+            groupTip
+                .style('opacity', 1)
+                .style('pointer-events', 'all')
+                .style('top', d3.event.pageY + d3.event.layerY)
+                .style('left', d3.event.pageX + d3.event.layerX)
+                .html(function() {
+                    var value = sigFigs(d.value, precision);
+                    return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
                 });
         };
         groupTip.hide = function(d){
