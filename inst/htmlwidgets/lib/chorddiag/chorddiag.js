@@ -371,8 +371,10 @@ HTMLWidgets.widget({
     }
 
     function click(d) {
-        console.log('clicked');
-      return eval(clickAction);
+        console.log('chord-clicked');
+        Shiny.setInputValue(clickAction, d, {priority: "event"});
+        console.log('chord-click-event emitted');
+    //   return eval(clickAction);
     }
 
     function clickGroup(d) {
