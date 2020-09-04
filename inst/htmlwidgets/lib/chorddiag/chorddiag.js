@@ -118,9 +118,9 @@ HTMLWidgets.widget({
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                .style('top', d3.event.pageY)
-                .style('left', d3.event.pageX)
-                .html(function(d) {
+                .style('top', d3.event.pageY + d3.event.layerY)
+                .style('left', d3.event.pageX + d3.event.layerX)
+                .html(function() {
                     var value = sigFigs(d.value, precision);
                     return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
                 });
@@ -134,9 +134,9 @@ HTMLWidgets.widget({
             groupTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                .style('top', d3.event.pageY)
-                .style('left', d3.event.pageX)
-                .html(function(d) {
+                .style('top', d3.event.pageY + d3.event.layerY)
+                .style('left', d3.event.pageX + d3.event.layerX)
+                .html(function() {
                     // indexes
                     var i = d.source.index,
                         j = d.target.index;
