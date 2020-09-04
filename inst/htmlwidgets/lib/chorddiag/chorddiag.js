@@ -81,7 +81,7 @@ HTMLWidgets.widget({
         console.log('creating chordTip:');
         var chordTip = d3.tip();
         if(!!toolTipId){
-            toolTipId.attr('id', toolTipId);
+            chordTip.attr('id', toolTipId);
         }
         chordTip
             .attr('class', 'd3-tip')
