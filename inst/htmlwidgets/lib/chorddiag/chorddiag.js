@@ -114,7 +114,7 @@ HTMLWidgets.widget({
         
         chordTip.show = function(d, that){
             const mouse = d3.mouse(that);
-            const bndRct = $(el).get().getBoundingClientRect();
+            const bndRct = el.getBoundingClientRect();
             console.log('show chord:');
             console.log('d: ', d);
             console.log('that: ', that);
