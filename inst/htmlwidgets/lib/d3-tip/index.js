@@ -30,6 +30,10 @@
       rootElement.appendChild(node);
     }
 
+    tip.node = function(){
+      return getNodeEl();
+    };
+
     // Public - show the tooltip on the screen
     //
     // Returns a tip

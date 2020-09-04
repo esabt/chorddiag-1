@@ -67,6 +67,7 @@ HTMLWidgets.widget({
         groupTipId = options.groupTipId;
     
     d3.select(el).selectAll("div.d3-tip").remove();
+    $(el).find("div.d3-tip").remove();
 
     if (showTooltips) {
         console.log('creating chordTip:');
@@ -74,7 +75,7 @@ HTMLWidgets.widget({
         if(!!toolTipId){
             chordTip.attr('id', toolTipId);
         }
-        chordTip
+        chordTip = chordTip
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -108,7 +109,7 @@ HTMLWidgets.widget({
         if(!!groupTipId){
             groupTip.attr('id', groupTip);
         }
-        groupTip
+        groupTip = groupTip
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -144,8 +145,11 @@ HTMLWidgets.widget({
     svg.attr("transform", "translate(" + xTranslate + "," + yTranslate + ")");
 
     if (showTooltips) {
-       svg.call(chordTip)
-          .call(groupTip);
+        svg.call(chordTip)
+           .call(groupTip);
+
+        $(el).append(chordTip.node());
+        $(el).append(groupTip.node());
     }
 
     // create groups
