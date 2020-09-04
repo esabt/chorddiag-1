@@ -75,7 +75,7 @@ HTMLWidgets.widget({
     showTooltips = true;
 
     if (showTooltips) {
-        console.log('chordTip: ', chordTip);
+        console.log('creating chordTip:');
         var chordTip = d3.tip();
         if(!!toolTipId){
             toolTipId.attr('id', toolTipId);
@@ -368,7 +368,9 @@ HTMLWidgets.widget({
     }
 
     function click(d) {
-      return eval(clickAction);
+        console.log('clicked');
+        this.renderValue(el, params, chord);
+    //   return eval(clickAction);
     }
 
     function clickGroup(d) {
