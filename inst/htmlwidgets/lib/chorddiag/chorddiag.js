@@ -67,9 +67,15 @@ HTMLWidgets.widget({
         groupTipId = options.groupTipId;
 
     // console.log('rerendering: - d3.select(el).selectAll("div.d3-tip"): ', d3.select(el).selectAll("div.d3-tip"));
-    d3.select(el).selectAll("div.d3-tip").remove();
+    let toDel = d3.select(el).selectAll("div.d3-tip");
+    console.log('dtoDel: ', toDel);
+    console.log('el: ', el);
+    toDel.remove();
+
+    showTooltips = true;
 
     if (showTooltips) {
+        console.log('chordTip: ', chordTip);
         var chordTip = d3.tip();
         if(!!toolTipId){
             toolTipId.attr('id', toolTipId);
@@ -144,8 +150,11 @@ HTMLWidgets.widget({
     svg.attr("transform", "translate(" + xTranslate + "," + yTranslate + ")");
 
     if (showTooltips) {
-       svg.enter().append(chordTip);
-       svg.enter().append(groupTip);
+       svg.call(chordTip)
+          .call(groupTip);
+
+        svg.enter().append(chordTip);
+        svg.enter().append(groupTip);
     }
 
     // create groups
