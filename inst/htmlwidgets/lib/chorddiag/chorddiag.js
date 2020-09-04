@@ -70,10 +70,11 @@ HTMLWidgets.widget({
     console.log('groupTipId: ', groupTipId);
     
     // console.log('rerendering: - d3.select(el).selectAll("div.d3-tip"): ', d3.select(el).selectAll("div.d3-tip"));
-    let toDel = d3.select(el).selectAll("div.d3-tip");
-    console.log('dtoDel: ', toDel);
-    console.log('el: ', el);
-    toDel.remove();
+    $(el).remove('div.d3-tip');
+    // let toDel = d3.select(el).selectAll("div.d3-tip");
+    // console.log('dtoDel: ', toDel);
+    // console.log('el: ', el);
+    // toDel.remove();
 
     showTooltips = true;
 
