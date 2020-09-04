@@ -83,9 +83,9 @@ HTMLWidgets.widget({
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
-            // .style('position', 'absolute')
-            // .style('top', "px")
-            // .style('left', "0px")
+            .style('position', 'absolute')
+            .style('top', "px")
+            .style('left', "0px")
             .style('opacity', 0)
             .style('pointer-events', 'none')
             .style('box-sizing', 'border-box')
@@ -118,16 +118,17 @@ HTMLWidgets.widget({
             console.log('d: ', d);
             console.log('that: ', that);
             console.log('mouse event: ', d3.event);
-            let posX = d3.event.pageX;
-            let posY = d3.event.pageY;
+            console.log('d3.mouse: ', mouse);
+            let posX = mouse[0];//d3.event.pageX;
+            let posY = mouse[1];// d3.event.pageY;
             console.log('posX: ', posX);
             console.log('posY: ', posY);
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                // .style('top',  `${posY}px`)
-                // .style('left', `${posX}px`)
-                .attr("transform", "translate(" + mouse[0] + "," + mouse[1] + ")scale(0)")
+                .style('top',  `${posY}px`)
+                .style('left', `${posX}px`)
+                // .attr("transform", "translate(" + mouse[0] + "," + mouse[1] + ")scale(0)")
                 .html(function() {
                     // indexes
                     var i = d.source.index,
