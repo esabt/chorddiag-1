@@ -121,9 +121,17 @@ HTMLWidgets.widget({
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
             let posX = mouse[0];
             let posY = mouse[1];
+            let tarX = posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30;
+            let tarY = posX + Math.floor(parentBndRct.width * 0.5)  - Math.floor(tolTpBndgRct.width * 0.5);
+            console.log('posX: ', posX);
+            console.log('posY: ', posY);
+            console.log('tarX: ', tarX);
+            console.log('tarY: ', tarY);
+            console.log('parentBndRct: ', parentBndRct);
+            console.log('tolTpBndgRct: ', tolTpBndgRct);
             chordTip
-                .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
-                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5)  - Math.floor(tolTpBndgRct.width * 0.5)}px`);
+                .style('top',  `${tarY}px`)
+                .style('left', `${tarX}px`);
         };
         chordTip.show = function(d, that){
             chordTip
