@@ -149,9 +149,16 @@ HTMLWidgets.widget({
 
         toolTip.onMouseOver = function(d){
             if (showTooltips){
-                toolTip.type = TOOL_TIP_TYPE.GROUP;
                 toolTip.show(d, d3.event);
             }
+        }
+        toolTip.onChordMouseOver = function(d){
+            this.type = TOOL_TIP_TYPE.CHORD;
+            this.onMouseOver(d);
+        }
+        toolTip.onGroupMouseOver = function(d){
+            this.type = TOOL_TIP_TYPE.GROUP;
+            this.onMouseOver(d);
         }
         toolTip.onMouseOut = function(){
             if (showTooltips) toolTip.hide();
@@ -159,6 +166,7 @@ HTMLWidgets.widget({
         toolTip.onMouseMove = function(){
             if(showTooltips) toolTip.setPosition(d3.event);
         }
+        on
     }
 
     // apply chord settings and data
@@ -194,7 +202,7 @@ HTMLWidgets.widget({
           .style("stroke", function(d) { return fillScale(d.index); })
           .attr("d", d3.arc().innerRadius(innerRadius).outerRadius(outerRadius))
           .on("mouseover", function(d) {
-            toolTip.onMouseOver(d);
+            toolTip.onGroupMouseOver(d);
             return groupFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
@@ -265,7 +273,7 @@ HTMLWidgets.widget({
           .style("stroke-width", "0.5px")
           .style("opacity", 1)
           .on("mouseover", function(d) {
-            toolTip.onMouseOver(d);
+            toolTip.onChordMouseOver(d);
             chordFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
