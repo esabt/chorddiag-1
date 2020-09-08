@@ -67,9 +67,9 @@ HTMLWidgets.widget({
         groupTipId = options.groupTipId;
     
     d3.select(el).selectAll("div.d3-tip").remove();
-    $(el).find("div.d3-tip").remove();
-    console.log('inner tags: ', $(el).find("div.d3-tip"));
-    console.log('all tags: ', $('body').find("div.d3-tip"));
+    // $(el).find("div.d3-tip").remove();
+    // console.log('inner tags: ', $(el).find("div.d3-tip"));
+    // console.log('all tags: ', $('body').find("div.d3-tip"));
 
     var svgContainer = d3.select(el).select("svg");
     svgContainer.selectAll("*").remove();
@@ -81,12 +81,12 @@ HTMLWidgets.widget({
         //     chordTip.attr('id', toolTipId);
         // }
         var chordTip = svgContainer
-            .append('text')
+            .append('div')
             .attr('id', toolTipId)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
-            .style('position', 'absolute')
+            .style('position', 'fixed')
             .style('top', "px")
             .style('left', "0px")
             .style('opacity', 0)
@@ -105,7 +105,7 @@ HTMLWidgets.widget({
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
-            .style('position', 'absolute')
+            .style('position', 'sticky')
             .style('top', 0)
             .style('left', 0)
             .style('opacity', 0)
@@ -115,21 +115,21 @@ HTMLWidgets.widget({
             // .offset([10, 10])
             ;
         
-        // chordTip.setPosition = function(that){
-        //     const mouse = d3.mouse(that);
-        //     const parentBndRct = svgContainer.node().getBoundingClientRect();
-        //     const tolTpBndgRct = chordTip.node().getBoundingClientRect();
-        //     let posX = mouse[0];
-        //     let posY = mouse[1];
-        //     chordTip
-        //         .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
-        //         .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5)}px`);
-        // };
+        chordTip.setPosition = function(that){
+            const mouse = d3.mouse(that);
+            const parentBndRct = el.getBoundingClientRect();
+            const tolTpBndgRct = chordTip.node().getBoundingClientRect();
+            let posX = mouse[0];
+            let posY = mouse[1];
+            chordTip
+                .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
+                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
+        };
         chordTip.show = function(d, that){
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                .text(function() {
+                .html(function() {
                     // indexes
                     var i = d.source.index,
                     j = d.target.index;
@@ -152,7 +152,7 @@ HTMLWidgets.widget({
                         return dir2;
                     }
                 });
-            // chordTip.setPosition(that);
+            chordTip.setPosition(that);
         };
         chordTip.hide = function(d){
             chordTip
@@ -161,13 +161,15 @@ HTMLWidgets.widget({
         };
         groupTip.setPosition = function(that){
             const mouse = d3.mouse(that);
-            const parentBndRct = el.getBoundingClientRect();
+            const parentBndRct = svgContainer.getBoundingClientRect();
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
             let posX = mouse[0];
             let posY = mouse[1];
+            let tarX = parentBndRct.x + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5) + posX;
+            let tarY = parentBndRct.y + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5) - 30 + posY;
             groupTip
-                .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
-                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5)}px`);
+                .style('top',  `${tarX}px`)
+                .style('left', `${tarY}px`);
         }
         groupTip.show = function(d, that){
             groupTip
