@@ -106,13 +106,13 @@ HTMLWidgets.widget({
             // .offset([10, 10])
             ;
         
-        chordTip.setPosition = function(d){
-            const mouse = {x: d.clientX, y: d.clientY}
+        chordTip.setPosition = function(mouseEvnt){
+            const mouse = {x: mouseEvnt.clientX, y: mouseEvnt.clientY}
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
             let tarX = mouse.x - Math.floor(tolTpBndgRct.width * 0.5);
             let tarY = mouse.y - tolTpBndgRct.height - 20;
 
-            console.log('d: ', d);
+            console.log('mouseEvnt: ', mouseEvnt);
             console.log('tarX: ', tarX);
             console.log('tarY: ', tarY);
 
@@ -130,7 +130,7 @@ HTMLWidgets.widget({
             //     .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
             //     .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
         };
-        chordTip.show = function(d){
+        chordTip.show = function(d, mouseEvnt){
             chordTip
                 .style('opacity', 1)
                 // .style('pointer-events', 'all')
@@ -157,7 +157,7 @@ HTMLWidgets.widget({
                         return dir2;
                     }
                 });
-            chordTip.setPosition(d);
+            chordTip.setPosition(mouseEvnt);
         };
         chordTip.hide = function(e){
             chordTip
@@ -308,16 +308,16 @@ HTMLWidgets.widget({
           .style("stroke-width", "0.5px")
           .style("opacity", 1)
           .on("mouseover", function(d) {
-              if (showTooltips) chordTip.show(d);
+              if (showTooltips) chordTip.show(d, d3.event);
               chordFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
-              if (showTooltips) chordTip.hide(d);
+              if (showTooltips) chordTip.hide(d3.event);
               chordFade(d, 1);
           })
           .on("mousemove", function(d){
               console.log('mouse-d: ', d, d3.event);
-            if(showTooltips) chordTip.setPosition(d);
+            if(showTooltips) chordTip.setPosition(d3.event);
           })
           .on("click", click);
 
