@@ -64,16 +64,20 @@ HTMLWidgets.widget({
         clickAction = options.clickAction,
         clickGroupAction = options.clickGroupAction;
     
+    // actually pointless, to remove the tooltip-divs, the Shiny-server rerenders 
+    // the entire ChordDiagram on update. Thus querying for 'div.d3-tip' returns an empty set:
     d3.select(el).selectAll("div.d3-tip").remove();
-    // $(el).find("div.d3-tip").remove();
-    // console.log('inner tags: ', $(el).find("div.d3-tip"));
-    // console.log('all tags: ', $('body').find("div.d3-tip"));
+
+    let TOOL_TIP_TYPE = {
+        GROUP: "GROUP",
+        CHORD: "CHORD"
+    };
 
     var svgContainer = d3.select(el).select("svg");
     svgContainer.selectAll("*").remove();
 
     if (showTooltips) {
-        var chordTip = d3.select(el)
+        var toolTip = d3.select(el)
             .append('div')
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
@@ -82,121 +86,79 @@ HTMLWidgets.widget({
             .style('top', "px")
             .style('left', "0px")
             .style('opacity', 0)
-            // .style('pointer-events', 'none')
-            // .style('box-sizing', 'border-box')
-            // .offset([10, 10])
-            ;
-
-        // var groupTip = d3.tip();
-        // if(!!groupTipId){
-        //     groupTip.attr('id', groupTip);
-        // }
-        var groupTip = d3.select(el)
-            .append('div')
-            .attr('class', 'd3-tip')
-            .style("font-size", tooltipFontsize + "px")
-            .style("font-family", "sans-serif")
-            .style('position', 'fixed')
-            .style('top', 0)
-            .style('left', 0)
-            .style('opacity', 0)
-            .style('pointer-events', 'none')
-            .style('box-sizing', 'border-box')
-            // .direction('n')
-            // .offset([10, 10])
             ;
         
-        chordTip.setPosition = function(mouseEvnt){
+        function genChordToolTipLabel(d){
+            var i = d.source.index,
+            j = d.target.index;
+            // values
+            var vij = sigFigs(matrix[i][j], precision),
+                vji = sigFigs(matrix[j][i], precision);
+            var dir1 = tooltipNames[i] + tooltipGroupConnector + tooltipNames[j] + ": " + vij + tooltipUnit,
+                dir2 = tooltipNames[j] + tooltipGroupConnector + tooltipNames[i] + ": " + vji + tooltipUnit;
+            if (type == "directional") {
+                if (i == j) {
+                    return dir1;
+                } else {
+                    if (showZeroTooltips) {
+                        return dir1 + "</br>" + dir2;
+                    } else {
+                        return dir1 + (vji > 0 ? "</br>" + dir2 : "");
+                    }
+                }
+            } else if (type == "bipartite") {
+                return dir2;
+            }
+        }
+        function genGroupToolTipLabel(d){
+            var value = sigFigs(d.value, precision);
+            return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
+        }
+
+        toolTip.type = TOOL_TIP_TYPE.CHORD; // set in mouse-event-handler (mouseMove, mouseLeave, mouseEnter);
+
+        toolTip.genLabel = function(d){
+            if(this.type == TOOL_TIP_TYPE.GROUP){
+                return genGroupToolTipLabel(d);
+            }else{ // this.type == TOOL_TIP_TYPE.CHORD
+                return genChordToolTipLabel(d);
+            }
+        }
+        
+        toolTip.setPosition = function(mouseEvnt){
             const mouse = {x: mouseEvnt.clientX, y: mouseEvnt.clientY}
-            const tolTpBndgRct = chordTip.node().getBoundingClientRect();
+            const tolTpBndgRct = toolTip.node().getBoundingClientRect();
             let tarX = mouse.x - Math.floor(tolTpBndgRct.width * 0.5);
             let tarY = mouse.y - tolTpBndgRct.height - 20;
-
-            console.log('mouseEvnt: ', mouseEvnt);
-            console.log('tarX: ', tarX);
-            console.log('tarY: ', tarY);
-
-            chordTip
+            toolTip
                 .style('top',  `${tarY}px`)
                 .style('left', `${tarX}px`);
-
-
-            // const mouse = d3.mouse(that);
-            // const parentBndRct = el.getBoundingClientRect();
-            // const tolTpBndgRct = chordTip.node().getBoundingClientRect();
-            // let posX = mouse[0];
-            // let posY = mouse[1];
-            // chordTip
-            //     .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
-            //     .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
         };
-        chordTip.show = function(d, mouseEvnt){
-            chordTip
+        toolTip.show = function(d, mouseEvnt){
+            toolTip
                 .style('opacity', 1)
-                // .style('pointer-events', 'all')
                 .html(function() {
-                    // indexes
-                    var i = d.source.index,
-                    j = d.target.index;
-                    // values
-                    var vij = sigFigs(matrix[i][j], precision),
-                        vji = sigFigs(matrix[j][i], precision);
-                    var dir1 = tooltipNames[i] + tooltipGroupConnector + tooltipNames[j] + ": " + vij + tooltipUnit,
-                        dir2 = tooltipNames[j] + tooltipGroupConnector + tooltipNames[i] + ": " + vji + tooltipUnit;
-                    if (type == "directional") {
-                        if (i == j) {
-                            return dir1;
-                        } else {
-                            if (showZeroTooltips) {
-                                return dir1 + "</br>" + dir2;
-                            } else {
-                                return dir1 + (vji > 0 ? "</br>" + dir2 : "");
-                            }
-                        }
-                    } else if (type == "bipartite") {
-                        return dir2;
-                    }
+                    return toolTip.genLabel(d);
                 });
-            chordTip.setPosition(mouseEvnt);
+            toolTip.setPosition(mouseEvnt);
         };
-        chordTip.hide = function(e){
-            chordTip
-                .style('opacity', 0)
-                .style('pointer-events', 'none');
+        toolTip.hide = function(){
+            toolTip
+                .style('opacity', 0);
         };
-        groupTip.setPosition = function(that){
-            // const mouse = d3.mouse(that);
-            // const parentBndRct = svgContainer.node().getBoundingClientRect();
-            // const tolTpBndgRct = chordTip.node().getBoundingClientRect();
-            // let posX = mouse[0];
-            // let posY = mouse[1];
-            // let tarX = parentBndRct.x + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5) + posX;
-            // let tarY = parentBndRct.y + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5) - 30 + posY;
-            // print('posX: ', posX);
-            // print('posY: ', posY);
-            // print('tarX: ', tarX);
-            // print('tarY: ', tarY);
-            // print('parentBndRct: ', parentBndRct);
-            // print('tolTpBndgRct: ', tolTpBndgRct);
-            // groupTip
-            //     .style('top',  `${tarX}px`)
-            //     .style('left', `${tarY}px`);
+
+        toolTip.onMouseOver = function(d){
+            if (showTooltips){
+                toolTip.type = TOOL_TIP_TYPE.GROUP;
+                toolTip.show(d, d3.event);
+            }
         }
-        groupTip.show = function(d){
-            groupTip
-                .style('opacity', 1)
-                .style('pointer-events', 'all')
-                .html(function() {
-                    var value = sigFigs(d.value, precision);
-                    return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
-                });
-            groupTip.setPosition(d);
-        };
-        groupTip.hide = function(d){
-            groupTip
-                .style('opacity', 0)
-                .style('pointer-events', 'none');
-        };
+        toolTip.onMouseOut = function(){
+            if (showTooltips) toolTip.hide();
+        }
+        toolTip.onMouseMove = function(){
+            if(showTooltips) toolTip.setPosition(d3.event);
+        }
     }
 
     // apply chord settings and data
@@ -219,11 +181,6 @@ HTMLWidgets.widget({
     var svg = svgContainer.append("g");
     svg.attr("transform", "translate(" + xTranslate + "," + yTranslate + ")");
 
-    // if (showTooltips) {
-    //     // svg.call(chordTip)
-    //     //    .call(groupTip);
-    // }
-
     // create groups
     var groups = svg.append("g").attr("class", "groups")
                     .selectAll("path")
@@ -237,15 +194,15 @@ HTMLWidgets.widget({
           .style("stroke", function(d) { return fillScale(d.index); })
           .attr("d", d3.arc().innerRadius(innerRadius).outerRadius(outerRadius))
           .on("mouseover", function(d) {
-              if (showTooltips) groupTip.show(d);
-              return groupFade(d, fadeLevel);
+            toolTip.onMouseOver(d);
+            return groupFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
-              if (showTooltips) groupTip.hide(d);
-              return groupFade(d, 1);
+            toolTip.onMouseOut();
+            return groupFade(d, 1);
           })
           .on("mousemove", function(d){
-            if(showTooltips) groupTip.setPosition(d);
+            toolTip.onMouseMove();
           })
           .on("click", clickGroup);
 
@@ -308,16 +265,15 @@ HTMLWidgets.widget({
           .style("stroke-width", "0.5px")
           .style("opacity", 1)
           .on("mouseover", function(d) {
-              if (showTooltips) chordTip.show(d, d3.event);
-              chordFade(d, fadeLevel);
+            toolTip.onMouseOver(d);
+            chordFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
-              if (showTooltips) chordTip.hide(d3.event);
-              chordFade(d, 1);
+            toolTip.onMouseOut();
+            chordFade(d, 1);
           })
           .on("mousemove", function(d){
-              console.log('mouse-d: ', d, d3.event);
-            if(showTooltips) chordTip.setPosition(d3.event);
+            toolTip.onMouseMove();
           })
           .on("click", click);
 
