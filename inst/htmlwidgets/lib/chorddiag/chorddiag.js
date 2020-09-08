@@ -105,7 +105,7 @@ HTMLWidgets.widget({
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
-            .style('position', 'sticky')
+            .style('position', 'fixed')
             .style('top', 0)
             .style('left', 0)
             .style('opacity', 0)
@@ -115,17 +115,26 @@ HTMLWidgets.widget({
             // .offset([10, 10])
             ;
         
-        chordTip.setPosition = function(that){
-            const mouse = d3.mouse(that);
-            const parentBndRct = el.getBoundingClientRect();
+        chordTip.setPosition = function(e){
+            const mouse = {x: e.clientX, y: e.clientY}
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
-            let posX = mouse[0];
-            let posY = mouse[1];
+            let tarX = mouse.x - Math.floor(tolTpBndgRct.width * 0.5);
+            let tarY = mouse.y - tolTpBndgRct.height - 20;
             chordTip
-                .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
-                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
+                .style('top',  `${tarY}px`)
+                .style('left', `${tarX}px`);
+
+
+            // const mouse = d3.mouse(that);
+            // const parentBndRct = el.getBoundingClientRect();
+            // const tolTpBndgRct = chordTip.node().getBoundingClientRect();
+            // let posX = mouse[0];
+            // let posY = mouse[1];
+            // chordTip
+            //     .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
+            //     .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
         };
-        chordTip.show = function(d, that){
+        chordTip.show = function(e, that){
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
@@ -152,9 +161,9 @@ HTMLWidgets.widget({
                         return dir2;
                     }
                 });
-            chordTip.setPosition(that);
+            chordTip.setPosition(e);
         };
-        chordTip.hide = function(d){
+        chordTip.hide = function(e){
             chordTip
                 .style('opacity', 0)
                 .style('pointer-events', 'none');
@@ -235,16 +244,16 @@ HTMLWidgets.widget({
     groups.style("fill", function(d) { return fillScale(d.index); })
           .style("stroke", function(d) { return fillScale(d.index); })
           .attr("d", d3.arc().innerRadius(innerRadius).outerRadius(outerRadius))
-          .on("mouseover", function(d) {
-              if (showTooltips) groupTip.show(d,this);
-              return groupFade(d, fadeLevel);
+          .on("mouseover", function(e) {
+              if (showTooltips) groupTip.show(e,this);
+              return groupFade(e, fadeLevel);
           })
-          .on("mouseout", function(d) {
-              if (showTooltips) groupTip.hide(d);
-              return groupFade(d, 1);
+          .on("mouseout", function(e) {
+              if (showTooltips) groupTip.hide(e);
+              return groupFade(e, 1);
           })
-          .on("mousemove", function(d){
-            if(showTooltips) groupTip.setPosition(this);
+          .on("mousemove", function(e){
+            if(showTooltips) groupTip.setPosition(e);
           })
           .on("click", clickGroup);
 
