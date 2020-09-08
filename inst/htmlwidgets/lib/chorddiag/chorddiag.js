@@ -161,7 +161,7 @@ HTMLWidgets.widget({
         };
         groupTip.setPosition = function(that){
             const mouse = d3.mouse(that);
-            const parentBndRct = svgContainer.getBoundingClientRect();
+            const parentBndRct = svgContainer.node().getBoundingClientRect();
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
             let posX = mouse[0];
             let posY = mouse[1];
