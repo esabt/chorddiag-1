@@ -123,7 +123,7 @@ HTMLWidgets.widget({
             let posY = mouse[1];
             chordTip
                 .style('top',  `${parentBndRct.y + posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
-                .style('left', `${parentBndRct.x + posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5)}px`);
+                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5)}px`);
         };
         chordTip.show = function(d, that){
             chordTip
