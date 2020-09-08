@@ -62,9 +62,7 @@ HTMLWidgets.widget({
         tooltipGroupConnector = options.tooltipGroupConnector,
         precision = options.precision,
         clickAction = options.clickAction,
-        clickGroupAction = options.clickGroupAction,
-        toolTipId = options.toolTipId,
-        groupTipId = options.groupTipId;
+        clickGroupAction = options.clickGroupAction;
     
     d3.select(el).selectAll("div.d3-tip").remove();
     // $(el).find("div.d3-tip").remove();
@@ -75,14 +73,8 @@ HTMLWidgets.widget({
     svgContainer.selectAll("*").remove();
 
     if (showTooltips) {
-        console.log('creating chordTip:');
-        // var chordTip = d3.tip();
-        // if(!!toolTipId){
-        //     chordTip.attr('id', toolTipId);
-        // }
-        var chordTip = svgContainer
+        var chordTip = d3.select(el)
             .append('div')
-            .attr('id', toolTipId)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -90,8 +82,8 @@ HTMLWidgets.widget({
             .style('top', "px")
             .style('left', "0px")
             .style('opacity', 0)
-            .style('pointer-events', 'none')
-            .style('box-sizing', 'border-box')
+            // .style('pointer-events', 'none')
+            // .style('box-sizing', 'border-box')
             // .offset([10, 10])
             ;
 
@@ -101,7 +93,6 @@ HTMLWidgets.widget({
         // }
         var groupTip = d3.select(el)
             .append('div')
-            .attr('id', groupTip)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -120,6 +111,10 @@ HTMLWidgets.widget({
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
             let tarX = mouse.x - Math.floor(tolTpBndgRct.width * 0.5);
             let tarY = mouse.y - tolTpBndgRct.height - 20;
+
+            console.log('tarX: ', tarX);
+            console.log('tarY: ', tarY);
+
             chordTip
                 .style('top',  `${tarY}px`)
                 .style('left', `${tarX}px`);
@@ -137,7 +132,7 @@ HTMLWidgets.widget({
         chordTip.show = function(d){
             chordTip
                 .style('opacity', 1)
-                .style('pointer-events', 'all')
+                // .style('pointer-events', 'all')
                 .html(function() {
                     // indexes
                     var i = d.source.index,
@@ -223,14 +218,10 @@ HTMLWidgets.widget({
     var svg = svgContainer.append("g");
     svg.attr("transform", "translate(" + xTranslate + "," + yTranslate + ")");
 
-    if (showTooltips) {
-        // svg.call(chordTip)
-        //    .call(groupTip);
-
-        // console.log('chordTip.node: ', chordTip.node());
-        // $(el).append(chordTip.node());
-        // $(el).append(groupTip.node());
-    }
+    // if (showTooltips) {
+    //     // svg.call(chordTip)
+    //     //    .call(groupTip);
+    // }
 
     // create groups
     var groups = svg.append("g").attr("class", "groups")
@@ -245,7 +236,7 @@ HTMLWidgets.widget({
           .style("stroke", function(d) { return fillScale(d.index); })
           .attr("d", d3.arc().innerRadius(innerRadius).outerRadius(outerRadius))
           .on("mouseover", function(d) {
-              if (showTooltips) groupTip.show(d,this);
+              if (showTooltips) groupTip.show(d);
               return groupFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
@@ -253,7 +244,7 @@ HTMLWidgets.widget({
               return groupFade(d, 1);
           })
           .on("mousemove", function(d){
-            if(showTooltips) groupTip.setPosition(this);
+            if(showTooltips) groupTip.setPosition(d);
           })
           .on("click", clickGroup);
 
