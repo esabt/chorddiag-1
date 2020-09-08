@@ -62,27 +62,20 @@ HTMLWidgets.widget({
         tooltipGroupConnector = options.tooltipGroupConnector,
         precision = options.precision,
         clickAction = options.clickAction,
-        clickGroupAction = options.clickGroupAction,
-        toolTipId = options.toolTipId,
-        groupTipId = options.groupTipId;
+        clickGroupAction = options.clickGroupAction;
     
     d3.select(el).selectAll("div.d3-tip").remove();
     $(el).find("div.d3-tip").remove();
     console.log('inner tags: ', $(el).find("div.d3-tip"));
     console.log('all tags: ', $('body').find("div.d3-tip"));
 
-    var svgContainer = d3.select(el).select("svg");
+    var svgContainer = d3.select(el).select("svg").style('position', 'relative');
     svgContainer.selectAll("*").remove();
 
     if (showTooltips) {
         console.log('creating chordTip:');
-        // var chordTip = d3.tip();
-        // if(!!toolTipId){
-        //     chordTip.attr('id', toolTipId);
-        // }
         var chordTip = d3.select(el)
             .append('div')
-            .attr('id', toolTipId)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -92,16 +85,10 @@ HTMLWidgets.widget({
             .style('opacity', 0)
             .style('pointer-events', 'none')
             .style('box-sizing', 'border-box')
-            // .offset([10, 10])
             ;
 
-        // var groupTip = d3.tip();
-        // if(!!groupTipId){
-        //     groupTip.attr('id', groupTip);
-        // }
         var groupTip = d3.select(el)
             .append('div')
-            .attr('id', groupTip)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -111,8 +98,6 @@ HTMLWidgets.widget({
             .style('opacity', 0)
             .style('pointer-events', 'none')
             .style('box-sizing', 'border-box')
-            // .direction('n')
-            // .offset([10, 10])
             ;
         
         chordTip.setPosition = function(that){
