@@ -166,7 +166,6 @@ HTMLWidgets.widget({
         toolTip.onMouseMove = function(){
             if(showTooltips) toolTip.setPosition(d3.event);
         }
-        on
     }
 
     // apply chord settings and data
