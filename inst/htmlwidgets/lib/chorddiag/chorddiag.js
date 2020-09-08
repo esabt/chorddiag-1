@@ -4,27 +4,22 @@ HTMLWidgets.widget({
   type: 'output',
 
   initialize: function(el, width, height) {
-
     d3.select(el).append("svg")
                  .attr("width", width)
                  .attr("height", height);
 
     return d3.chord();
-
   },
 
   resize: function(el, width, height, chord) {
-
     d3.select(el).select("svg")
                  .attr("width", width)
                  .attr("height", height);
 
     this.renderValue(el, chord.params, chord);
-
   },
 
   renderValue: function(el, params, chord) {
-
     // save params for reference from resize method
     chord.params = params;
 
