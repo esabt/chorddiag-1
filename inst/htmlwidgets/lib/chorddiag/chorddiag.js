@@ -74,7 +74,7 @@ HTMLWidgets.widget({
 
     if (showTooltips) {
         console.log('creating chordTip:');
-        var chordTip = d3.select(el)
+        var chordTip = svgContainer
             .append('div')
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
@@ -87,7 +87,7 @@ HTMLWidgets.widget({
             .style('box-sizing', 'border-box')
             ;
 
-        var groupTip = d3.select(el)
+        var groupTip = svgContainer
             .append('div')
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
