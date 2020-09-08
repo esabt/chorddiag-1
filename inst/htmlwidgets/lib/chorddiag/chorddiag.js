@@ -75,7 +75,7 @@ HTMLWidgets.widget({
     svgContainer.selectAll("*").remove();
 
     if (showTooltips) {
-        // console.log('creating chordTip:');
+        console.log('creating chordTip:');
         // var chordTip = d3.tip();
         // if(!!toolTipId){
         //     chordTip.attr('id', toolTipId);
