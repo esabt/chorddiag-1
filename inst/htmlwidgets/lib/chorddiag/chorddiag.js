@@ -316,7 +316,7 @@ HTMLWidgets.widget({
               chordFade(d, 1);
           })
           .on("mousemove", function(d){
-              console.log('mouse-d: ', d);
+              console.log('mouse-d: ', d, d3.event);
             if(showTooltips) chordTip.setPosition(d);
           })
           .on("click", click);
