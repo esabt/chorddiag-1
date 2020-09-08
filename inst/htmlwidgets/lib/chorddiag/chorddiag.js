@@ -134,7 +134,7 @@ HTMLWidgets.widget({
             //     .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
             //     .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
         };
-        chordTip.show = function(e, that){
+        chordTip.show = function(d, that){
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
@@ -161,7 +161,7 @@ HTMLWidgets.widget({
                         return dir2;
                     }
                 });
-            chordTip.setPosition(e);
+            chordTip.setPosition(d);
         };
         chordTip.hide = function(e){
             chordTip
