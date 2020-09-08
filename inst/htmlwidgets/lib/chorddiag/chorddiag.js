@@ -115,10 +115,10 @@ HTMLWidgets.widget({
             // .offset([10, 10])
             ;
         
-        chordTip.setPosition = function(e){
-            const mouse = {x: e.clientX, y: e.clientY}
+        chordTip.setPosition = function(d){
+            const mouse = {x: d.clientX, y: d.clientY}
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
-            let tarX = mouse.x - Math.floor(tolTpBndgRct.width * 0.5);
+            let tarX = mouse.x - Madh.floor(tolTpBndgRct.width * 0.5);
             let tarY = mouse.y - tolTpBndgRct.height - 20;
             chordTip
                 .style('top',  `${tarY}px`)
@@ -134,7 +134,7 @@ HTMLWidgets.widget({
             //     .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
             //     .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
         };
-        chordTip.show = function(d, that){
+        chordTip.show = function(d){
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
@@ -169,24 +169,24 @@ HTMLWidgets.widget({
                 .style('pointer-events', 'none');
         };
         groupTip.setPosition = function(that){
-            const mouse = d3.mouse(that);
-            const parentBndRct = svgContainer.node().getBoundingClientRect();
-            const tolTpBndgRct = chordTip.node().getBoundingClientRect();
-            let posX = mouse[0];
-            let posY = mouse[1];
-            let tarX = parentBndRct.x + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5) + posX;
-            let tarY = parentBndRct.y + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5) - 30 + posY;
-            print('posX: ', posX);
-            print('posY: ', posY);
-            print('tarX: ', tarX);
-            print('tarY: ', tarY);
-            print('parentBndRct: ', parentBndRct);
-            print('tolTpBndgRct: ', tolTpBndgRct);
-            groupTip
-                .style('top',  `${tarX}px`)
-                .style('left', `${tarY}px`);
+            // const mouse = d3.mouse(that);
+            // const parentBndRct = svgContainer.node().getBoundingClientRect();
+            // const tolTpBndgRct = chordTip.node().getBoundingClientRect();
+            // let posX = mouse[0];
+            // let posY = mouse[1];
+            // let tarX = parentBndRct.x + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5) + posX;
+            // let tarY = parentBndRct.y + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5) - 30 + posY;
+            // print('posX: ', posX);
+            // print('posY: ', posY);
+            // print('tarX: ', tarX);
+            // print('tarY: ', tarY);
+            // print('parentBndRct: ', parentBndRct);
+            // print('tolTpBndgRct: ', tolTpBndgRct);
+            // groupTip
+            //     .style('top',  `${tarX}px`)
+            //     .style('left', `${tarY}px`);
         }
-        groupTip.show = function(d, that){
+        groupTip.show = function(d){
             groupTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
@@ -194,7 +194,7 @@ HTMLWidgets.widget({
                     var value = sigFigs(d.value, precision);
                     return tooltipNames[d.index] + " (total): " + value + tooltipUnit;
                 });
-            groupTip.setPosition(that);
+            groupTip.setPosition(d);
         };
         groupTip.hide = function(d){
             groupTip
@@ -244,16 +244,16 @@ HTMLWidgets.widget({
     groups.style("fill", function(d) { return fillScale(d.index); })
           .style("stroke", function(d) { return fillScale(d.index); })
           .attr("d", d3.arc().innerRadius(innerRadius).outerRadius(outerRadius))
-          .on("mouseover", function(e) {
-              if (showTooltips) groupTip.show(e,this);
-              return groupFade(e, fadeLevel);
+          .on("mouseover", function(d) {
+              if (showTooltips) groupTip.show(d,this);
+              return groupFade(d, fadeLevel);
           })
-          .on("mouseout", function(e) {
-              if (showTooltips) groupTip.hide(e);
-              return groupFade(e, 1);
+          .on("mouseout", function(d) {
+              if (showTooltips) groupTip.hide(d);
+              return groupFade(d, 1);
           })
-          .on("mousemove", function(e){
-            if(showTooltips) groupTip.setPosition(e);
+          .on("mousemove", function(d){
+            if(showTooltips) groupTip.setPosition(this);
           })
           .on("click", clickGroup);
 
@@ -316,7 +316,7 @@ HTMLWidgets.widget({
           .style("stroke-width", "0.5px")
           .style("opacity", 1)
           .on("mouseover", function(d) {
-              if (showTooltips) chordTip.show(d, this);
+              if (showTooltips) chordTip.show(d);
               return chordFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
@@ -324,7 +324,7 @@ HTMLWidgets.widget({
               return chordFade(d, 1);
           })
           .on("mousemove", function(d){
-            if(showTooltips) chordTip.setPosition(this);
+            if(showTooltips) chordTip.setPosition(d);
           })
           .on("click", click);
 
