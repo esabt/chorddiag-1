@@ -106,8 +106,8 @@ HTMLWidgets.widget({
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
             let posX = mouse[0];
             let posY = mouse[1];
-            let tarX = posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30;
-            let tarY = posX + Math.floor(parentBndRct.width * 0.5)  - Math.floor(tolTpBndgRct.width * 0.5);
+            let tarY = posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30;
+            let tarX = posX + Math.floor(parentBndRct.width * 0.5)  - Math.floor(tolTpBndgRct.width * 0.5);
             console.log('posX: ', posX);
             console.log('posY: ', posY);
             console.log('tarX: ', tarX);
