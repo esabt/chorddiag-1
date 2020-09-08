@@ -62,20 +62,27 @@ HTMLWidgets.widget({
         tooltipGroupConnector = options.tooltipGroupConnector,
         precision = options.precision,
         clickAction = options.clickAction,
-        clickGroupAction = options.clickGroupAction;
+        clickGroupAction = options.clickGroupAction,
+        toolTipId = options.toolTipId,
+        groupTipId = options.groupTipId;
     
     d3.select(el).selectAll("div.d3-tip").remove();
     $(el).find("div.d3-tip").remove();
     console.log('inner tags: ', $(el).find("div.d3-tip"));
     console.log('all tags: ', $('body').find("div.d3-tip"));
 
-    var svgContainer = d3.select(el).select("svg").style('position', 'relative');
+    var svgContainer = d3.select(el).select("svg");
     svgContainer.selectAll("*").remove();
 
     if (showTooltips) {
         console.log('creating chordTip:');
+        // var chordTip = d3.tip();
+        // if(!!toolTipId){
+        //     chordTip.attr('id', toolTipId);
+        // }
         var chordTip = svgContainer
-            .append('div')
+            .append('text')
+            .attr('id', toolTipId)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -85,10 +92,16 @@ HTMLWidgets.widget({
             .style('opacity', 0)
             .style('pointer-events', 'none')
             .style('box-sizing', 'border-box')
+            // .offset([10, 10])
             ;
 
-        var groupTip = svgContainer
+        // var groupTip = d3.tip();
+        // if(!!groupTipId){
+        //     groupTip.attr('id', groupTip);
+        // }
+        var groupTip = d3.select(el)
             .append('div')
+            .attr('id', groupTip)
             .attr('class', 'd3-tip')
             .style("font-size", tooltipFontsize + "px")
             .style("font-family", "sans-serif")
@@ -98,31 +111,25 @@ HTMLWidgets.widget({
             .style('opacity', 0)
             .style('pointer-events', 'none')
             .style('box-sizing', 'border-box')
+            // .direction('n')
+            // .offset([10, 10])
             ;
         
-        chordTip.setPosition = function(that){
-            const mouse = d3.mouse(that);
-            const parentBndRct = svgContainer.node().getBoundingClientRect();
-            const tolTpBndgRct = chordTip.node().getBoundingClientRect();
-            let posX = mouse[0];
-            let posY = mouse[1];
-            let tarY = posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30;
-            let tarX = posX + Math.floor(parentBndRct.width * 0.5)  - Math.floor(tolTpBndgRct.width * 0.5);
-            console.log('posX: ', posX);
-            console.log('posY: ', posY);
-            console.log('tarX: ', tarX);
-            console.log('tarY: ', tarY);
-            console.log('parentBndRct: ', parentBndRct);
-            console.log('tolTpBndgRct: ', tolTpBndgRct);
-            chordTip
-                .style('top',  `${tarY}px`)
-                .style('left', `${tarX}px`);
-        };
+        // chordTip.setPosition = function(that){
+        //     const mouse = d3.mouse(that);
+        //     const parentBndRct = svgContainer.node().getBoundingClientRect();
+        //     const tolTpBndgRct = chordTip.node().getBoundingClientRect();
+        //     let posX = mouse[0];
+        //     let posY = mouse[1];
+        //     chordTip
+        //         .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
+        //         .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5)}px`);
+        // };
         chordTip.show = function(d, that){
             chordTip
                 .style('opacity', 1)
                 .style('pointer-events', 'all')
-                .html(function() {
+                .text(function() {
                     // indexes
                     var i = d.source.index,
                     j = d.target.index;
@@ -145,7 +152,7 @@ HTMLWidgets.widget({
                         return dir2;
                     }
                 });
-            chordTip.setPosition(that);
+            // chordTip.setPosition(that);
         };
         chordTip.hide = function(d){
             chordTip
