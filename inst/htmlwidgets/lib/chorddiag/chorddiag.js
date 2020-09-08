@@ -75,7 +75,7 @@ HTMLWidgets.widget({
     svgContainer.selectAll("*").remove();
 
     if (showTooltips) {
-        console.log('creating chordTip:');
+        // console.log('creating chordTip:');
         // var chordTip = d3.tip();
         // if(!!toolTipId){
         //     chordTip.attr('id', toolTipId);
@@ -167,6 +167,12 @@ HTMLWidgets.widget({
             let posY = mouse[1];
             let tarX = parentBndRct.x + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5) + posX;
             let tarY = parentBndRct.y + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5) - 30 + posY;
+            print('posX: ', posX);
+            print('posY: ', posY);
+            print('tarX: ', tarX);
+            print('tarY: ', tarY);
+            print('parentBndRct: ', parentBndRct);
+            print('tolTpBndgRct: ', tolTpBndgRct);
             groupTip
                 .style('top',  `${tarX}px`)
                 .style('left', `${tarY}px`);
