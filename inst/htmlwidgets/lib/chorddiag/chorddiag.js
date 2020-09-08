@@ -112,6 +112,7 @@ HTMLWidgets.widget({
             let tarX = mouse.x - Math.floor(tolTpBndgRct.width * 0.5);
             let tarY = mouse.y - tolTpBndgRct.height - 20;
 
+            console.log('d: ', d);
             console.log('tarX: ', tarX);
             console.log('tarY: ', tarY);
 
@@ -308,13 +309,14 @@ HTMLWidgets.widget({
           .style("opacity", 1)
           .on("mouseover", function(d) {
               if (showTooltips) chordTip.show(d);
-              return chordFade(d, fadeLevel);
+              chordFade(d, fadeLevel);
           })
           .on("mouseout", function(d) {
               if (showTooltips) chordTip.hide(d);
-              return chordFade(d, 1);
+              chordFade(d, 1);
           })
           .on("mousemove", function(d){
+              console.log('mouse-d: ', d);
             if(showTooltips) chordTip.setPosition(d);
           })
           .on("click", click);
