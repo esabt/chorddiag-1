@@ -69,7 +69,10 @@ HTMLWidgets.widget({
     d3.select(el).selectAll("div.d3-tip").remove();
     $(el).find("div.d3-tip").remove();
     console.log('inner tags: ', $(el).find("div.d3-tip"));
-    console.log('all tags: ', $('body').find("div.d3-tip"))
+    console.log('all tags: ', $('body').find("div.d3-tip"));
+
+    var svgContainer = d3.select(el).select("svg");
+    svgContainer.selectAll("*").remove();
 
     if (showTooltips) {
         console.log('creating chordTip:');
@@ -114,13 +117,13 @@ HTMLWidgets.widget({
         
         chordTip.setPosition = function(that){
             const mouse = d3.mouse(that);
-            const parentBndRct = el.getBoundingClientRect();
+            const parentBndRct = svgContainer.node().getBoundingClientRect();
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
             let posX = mouse[0];
             let posY = mouse[1];
             chordTip
-                .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
-                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
+                .style('top',  `${parentBndRct.y + posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
+                .style('left', `${parentBndRct.x + posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5)}px`);
         };
         chordTip.show = function(d, that){
             chordTip
@@ -164,7 +167,7 @@ HTMLWidgets.widget({
             let posY = mouse[1];
             groupTip
                 .style('top',  `${posY + Math.floor(parentBndRct.height * 0.5) - tolTpBndgRct.height - 30}px`)
-                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.height * 0.5)}px`);
+                .style('left', `${posX + Math.floor(parentBndRct.width * 0.5) - Math.floor(tolTpBndgRct.width * 0.5)}px`);
         }
         groupTip.show = function(d, that){
             groupTip
@@ -182,9 +185,6 @@ HTMLWidgets.widget({
                 .style('pointer-events', 'none');
         };
     }
-
-    var svgContainer = d3.select(el).select("svg");
-    svgContainer.selectAll("*").remove();
 
     // apply chord settings and data
     chord = chord.padAngle(groupPadding)
