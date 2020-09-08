@@ -118,7 +118,7 @@ HTMLWidgets.widget({
         chordTip.setPosition = function(d){
             const mouse = {x: d.clientX, y: d.clientY}
             const tolTpBndgRct = chordTip.node().getBoundingClientRect();
-            let tarX = mouse.x - Madh.floor(tolTpBndgRct.width * 0.5);
+            let tarX = mouse.x - Math.floor(tolTpBndgRct.width * 0.5);
             let tarY = mouse.y - tolTpBndgRct.height - 20;
             chordTip
                 .style('top',  `${tarY}px`)
