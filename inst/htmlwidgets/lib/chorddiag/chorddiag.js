@@ -59,13 +59,13 @@ HTMLWidgets.widget({
         clickAction = options.clickAction,
         clickGroupAction = options.clickGroupAction;
     
-    // actually pointless, to remove the tooltip-divs, the Shiny-server rerenders 
+    // actually pointless, to remove the tooltip-divs. the Shiny-server rerenders 
     // the entire ChordDiagram on update. Thus querying for 'div.d3-tip' returns an empty set:
     d3.select(el).selectAll("div.d3-tip").remove();
 
     let TOOL_TIP_TYPE = {
-        GROUP: "GROUP",
-        CHORD: "CHORD"
+        GROUP: 1, // don't start enum index on 0 - now it can be used to check for valid TOOL_TIP_TYPE like so: if(type){ ... }else{ /*invalid TOOL_TIP_TYPE*/ }
+        CHORD: 2
     };
 
     var svgContainer = d3.select(el).select("svg");
@@ -401,15 +401,18 @@ HTMLWidgets.widget({
 
     function click(d) {
         if(!clickAction)return;
-        Shiny.setInputValue(clickAction, d, {priority: "event"});
+        // Shiny.setInputValue(clickAction, d, {priority: "event"});
+
+        return eval(clickAction);
     }
 
     function clickGroup(d) {
         if(!clickGroupAction)return;
-        Shiny.setInputValue(clickGroupAction, d, {priority: "event"});
+        // Shiny.setInputValue(clickGroupAction, d, {priority: "event"});
+
+        return eval(clickGroupAction)
     }
 
   }  // end renderValue function
-
 });
 
